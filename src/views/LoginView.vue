@@ -1,0 +1,150 @@
+<template>
+  <div>
+    <div>
+      <div>
+        <div class="login-form">
+          <div v-if="!settings.registerActive">
+            <form>
+              <h3>Sign In</h3>
+              <input v-model="userInfo.email" type="email" placeholder="Email" required>
+              <input v-model="userInfo.password" type="password" placeholder="Password" required>
+              <input type="button" class="submit-button" @click="doLogin" value="Login">
+              <p>Don't have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; settings.formHeight = '640px'">Sign up here</a></p>
+            </form>
+          </div>
+
+          <div v-else>
+            <form>
+              <h3>Sign Up</h3>
+              <input v-model="userInfo.email" type="email" placeholder="Email" required>
+              <input v-model="userInfo.firstName" type="text" placeholder="First Name" required>
+              <input v-model="userInfo.middleName" type="text" placeholder="Middle Name">
+              <input v-model="userInfo.lastName" type="text" placeholder="Last Name" required>
+              <input v-model="userInfo.phone" type="text" placeholder="Phone" required>
+              <input v-model="userInfo.password" type="password" placeholder="Password" required>
+              <input v-model="confirm" type="password" placeholder="Confirm Password" required>
+              <input type="button" class="submit-button" value="Register">
+              <p>Already have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; settings.formHeight = '380px'">Sign in here</a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'LoginView',
+  data: () => {
+    return {
+      userInfo: {
+        email: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        phone: '',
+        password: '',
+        confirmPassword: ''
+      },
+      settings: {
+        registerActive: false
+      },
+      formHeight: '380px'
+    }
+  },
+
+  methods: {
+    doLogin: async function () {
+      if (this.userInfo.email === '') {
+        alert('You have not entered an email')
+      } else if (this.userInfo.password === '') {
+        alert('You have not entered an password')
+      } else {
+        const status = await (this.$store.dispatch('onLogin', {
+          email: this.userInfo.email,
+          password: this.userInfo.password
+        }))
+        if (status) {
+          await this.$router.push({ name: 'home' })
+        } else {
+          alert('Invalid password')
+        }
+      }
+    }
+  }
+})
+</script>
+
+<style scoped>
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+form {
+  height: v-bind(formHeight);
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.403);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}
+
+form * {
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  letter-spacing: 1px;
+  outline: none;
+  border: none;
+}
+
+form h3 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+}
+
+input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(206, 205, 205, 0.514);
+  border-radius: 5px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  color: black;
+}
+
+::placeholder {
+  color: #000000;
+}
+
+.submit-button{
+  background-color: rgba(21, 20, 20, 0.71);
+  color: snow;
+}
+
+.submit-button:hover{
+  background-color: rgba(58, 57, 57, 0.8);
+}
+
+p{
+  margin-top: 10px;
+}
+</style>
