@@ -1,32 +1,62 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-
-const authGuard = function (to: any, from: any, next: any) {
-  if (isAuthorized) {
-    next()
-  } else {
-    next({ name: 'login' })
-  }
-}
+import store from '@/store'
+import { UserRoles } from '@/store/modules/roles'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'login',
-    component: () => import('../views/LoginView.vue')
+    component: () => import('../views/LoginView.vue'),
+    meta: {
+      title: 'Login | GusMelford Books'
+    }
   },
   {
     path: '/home',
     name: 'home',
     component: () => import('../views/HomeView.vue'),
-    beforeEnter: authGuard
+    meta: {
+      title: 'Home | Shop',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/admin-panel',
+    name: 'admin',
+    component: () => import('../views/AdminPanelView.vue'),
+    meta: {
+      title: 'Admin Panel',
+      requiresAuth: true,
+      adminRoleRequired: true
+    }
   }
 ]
-
-const isAuthorized = localStorage.getItem('accessToken')
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const nearestWithTitle = to.matched.slice().reverse().find((r) => r.meta && r.meta.title)
+  document.title = `${nearestWithTitle?.meta.title || 'GusMelford Books'}`
+  if (to.meta.requiresAuth) {
+    if (store.getters.getAuthState) {
+      const role = store.getters.getUserRole
+      if (to.meta.adminRoleRequired) {
+        if (role === UserRoles.Admin) {
+          next()
+        } else {
+          next({ name: 'home' })
+        }
+      }
+      next()
+    } else {
+      next({ name: 'login' })
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

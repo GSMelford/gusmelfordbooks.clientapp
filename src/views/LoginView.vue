@@ -3,13 +3,14 @@
     <div>
       <div>
         <div class="login-form">
+          <h2 v-if="!settings.registerActive">GusMelford <i>Books</i></h2>
           <div v-if="!settings.registerActive">
             <form>
               <h3>Sign In</h3>
               <input v-model="userInfo.email" type="email" placeholder="Email" required>
               <input v-model="userInfo.password" type="password" placeholder="Password" required>
               <input type="button" class="submit-button" @click="doLogin" value="Login">
-              <p>Don't have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; settings.formHeight = '640px'">Sign up here</a></p>
+              <p>Don't have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; formHeight = '640px'">Sign up here</a></p>
             </form>
           </div>
 
@@ -22,9 +23,9 @@
               <input v-model="userInfo.lastName" type="text" placeholder="Last Name" required>
               <input v-model="userInfo.phone" type="text" placeholder="Phone" required>
               <input v-model="userInfo.password" type="password" placeholder="Password" required>
-              <input v-model="confirm" type="password" placeholder="Confirm Password" required>
-              <input type="button" class="submit-button" value="Register">
-              <p>Already have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; settings.formHeight = '380px'">Sign in here</a></p>
+              <input v-model="userInfo.confirmPassword" type="password" placeholder="Confirm Password" required>
+              <input type="button" class="submit-button" @click="doRegister" value="Register">
+              <p>Already have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; formHeight = '380px'">Sign in here</a></p>
             </form>
           </div>
         </div>
@@ -74,6 +75,26 @@ export default defineComponent({
           alert('Invalid password')
         }
       }
+    },
+    doRegister: async function () {
+      if (this.userInfo.password !== this.userInfo.confirmPassword) {
+        alert('Passwords do not match')
+      } else {
+        const status = await (this.$store.dispatch('register', {
+          email: this.userInfo.email,
+          password: this.userInfo.confirmPassword,
+          firstName: this.userInfo.firstName,
+          middleName: this.userInfo.middleName,
+          lastName: this.userInfo.lastName,
+          phone: this.userInfo.phone
+        }))
+        if (status) {
+          alert('Ok')
+          await this.$router.push({ name: 'home' })
+        } else {
+          alert('Something went wrong, try again')
+        }
+      }
     }
   }
 })
@@ -116,6 +137,22 @@ form h3 {
   font-weight: 500;
   line-height: 42px;
   text-align: center;
+}
+
+h2 {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+  color: snow;
+  padding: 15px;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.70);
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  backdrop-filter: blur(10px);
 }
 
 input {

@@ -1,14 +1,16 @@
-import { AxiosResponse } from 'axios'
 import { authMethod } from '@/api/authRequet'
-import { defaultAxios } from '@/api/authConfig'
+import { httpClient } from '@/api/axiosConfig'
 
 export default {
   state: {
-    token: String,
-    userRole: String
+    accessToken: localStorage.getItem('accessToken') || null,
+    userRole: localStorage.getItem('userRole') || null
   },
   getters: {
-    getUserRole (state: any) {
+    getAuthState (state: any): boolean {
+      return state.accessToken !== null
+    },
+    getUserRole (state: any): string {
       return state.userRole
     }
   },
@@ -18,15 +20,15 @@ export default {
       localStorage.setItem('accessToken', accessToken)
     },
     setUserRole (state: any, userRole: string) {
-      state.credentials.userRole = userRole
+      state.userRole = userRole
       localStorage.setItem('userRole', userRole)
     },
     deleteAccessToken (state: any) {
-      state.credentials.accessToken = null
+      state.accessToken = null
       localStorage.removeItem('accessToken')
     },
     deleteUserRole (state: any) {
-      state.credentials.userRole = null
+      state.userRole = null
       localStorage.removeItem('userRole')
     }
   },
@@ -36,7 +38,7 @@ export default {
       if (response.status === 200) {
         context.commit('setAccessToken', response.data.accessToken)
         context.commit('setUserRole', response.data.userRole)
-        defaultAxios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`
+        httpClient.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`
         return true
       }
       return false
@@ -44,7 +46,14 @@ export default {
     onLogout (context: any) {
       context.commit('deleteAccessToken')
       context.commit('deleteUserRole')
-      delete defaultAxios.defaults.headers.common.Authorization
+      delete httpClient.defaults.headers.common.Authorization
+    },
+    async register (context: any, payload: any): Promise<boolean> {
+      const response = await authMethod.register(payload)
+      if (response.status === 200) {
+        return await context.dispatch('onLogin', payload)
+      }
+      return false
     }
   }
 }
