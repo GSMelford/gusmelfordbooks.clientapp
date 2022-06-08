@@ -8,7 +8,7 @@
       </thead>
       <tbody>
       <tr v-for="row in rows" :key="row.id">
-        <td v-for="item in row" :key="item.id">{{item}}</td>
+        <td v-for="item in row" :key="item?.id">{{item}}</td>
       </tr>
       </tbody>
     </table>

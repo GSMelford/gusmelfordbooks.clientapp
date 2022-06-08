@@ -21,6 +21,16 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/admin-panel-old',
+    name: 'admin',
+    component: () => import('../views/AdminPanelViewOld.vue'),
+    meta: {
+      title: 'Admin Panel',
+      requiresAuth: true,
+      adminRoleRequired: true
+    }
+  },
+  {
     path: '/admin-panel',
     name: 'admin',
     component: () => import('../views/AdminPanelView.vue'),
