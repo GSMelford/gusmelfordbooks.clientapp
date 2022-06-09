@@ -4,14 +4,21 @@ import { httpClient } from '@/api/axiosConfig'
 export default {
   state: {
     accessToken: localStorage.getItem('accessToken') || null,
-    userRole: localStorage.getItem('userRole') || null
+    userRole: localStorage.getItem('userRole') || null,
+    name: localStorage.getItem('name') || null
   },
   getters: {
+    getToken (state: any): string {
+      return state.accessToken
+    },
     getAuthState (state: any): boolean {
       return state.accessToken !== null
     },
     getUserRole (state: any): string {
       return state.userRole
+    },
+    getName (state: any): string {
+      return state.name
     }
   },
   mutations: {
@@ -23,6 +30,10 @@ export default {
       state.userRole = userRole
       localStorage.setItem('userRole', userRole)
     },
+    setName (state: any, name: string) {
+      state.name = name
+      localStorage.setItem('name', name)
+    },
     deleteAccessToken (state: any) {
       state.accessToken = null
       localStorage.removeItem('accessToken')
@@ -30,6 +41,10 @@ export default {
     deleteUserRole (state: any) {
       state.userRole = null
       localStorage.removeItem('userRole')
+    },
+    deleteName (state: any) {
+      state.name = null
+      localStorage.removeItem('name')
     }
   },
   actions: {
@@ -38,7 +53,7 @@ export default {
       if (response.status === 200) {
         context.commit('setAccessToken', response.data.accessToken)
         context.commit('setUserRole', response.data.userRole)
-        httpClient.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`
+        context.commit('setName', response.data.name)
         return true
       }
       return false
@@ -46,7 +61,7 @@ export default {
     onLogout (context: any) {
       context.commit('deleteAccessToken')
       context.commit('deleteUserRole')
-      delete httpClient.defaults.headers.common.Authorization
+      context.commit('deleteName')
     },
     async register (context: any, payload: any): Promise<boolean> {
       const response = await authMethod.register(payload)

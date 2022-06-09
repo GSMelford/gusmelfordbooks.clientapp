@@ -1,6 +1,4 @@
-import axios from 'axios'
-import store from '@/store'
-import router from '@/router'
+import axios, { AxiosError } from 'axios'
 
 const config = {
   baseURL: 'https://localhost:44397/',
@@ -13,12 +11,13 @@ const httpClient = axios.create(config)
 
 httpClient.interceptors.response.use(function (response) {
   return response
-}, async function (error) {
-  if (error.status === 401) {
+}, async function (response: AxiosError) {
+  if (response.response!.status === 0) {
+    /* alert('SERVER ERROR')
     await store.dispatch('onLogout')
-    await router.push({ name: 'login' })
+    await router.push({ name: 'login' }) */
   }
-  return Promise.reject(error)
+  return Promise.reject(response)
 })
 
 export { httpClient }

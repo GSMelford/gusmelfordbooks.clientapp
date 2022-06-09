@@ -7,18 +7,18 @@
         <site-input placeholder="Language" ref="languageInput"></site-input>
         <site-input placeholder="Description" ref="descriptionInput"></site-input>
         <site-input placeholder="Price" ref="priceInput"></site-input>
-        <label>Authors</label><br>
-        <select class="site-select" v-model="authorValue">
+        <label v-if="!isEditorActive">Authors</label><br>
+        <select v-if="!isEditorActive" class="site-select" v-model="authorValue">
           <option v-for="author in this.getAuthors" :key="author.id" :value="author.id">
             {{`${author.firstName} ${author.middleName} ${author.lastName}`}}
           </option>
         </select>
-        <label>Genres</label><br>
-        <select class="site-select" v-model="genreValues" multiple>
+        <label v-if="!isEditorActive">Genres</label><br>
+        <select v-if="!isEditorActive" class="site-select-multiple" v-model="genreValues" multiple>
           <option v-for="genre in this.getGenres" :key="genre.id" :value="genre.id">{{genre.name}}</option>
         </select>
-        <label>Publishers</label><br>
-        <select class="site-select" v-model="publisherValues" multiple>
+        <label v-if="!isEditorActive">Publishers</label><br>
+        <select v-if="!isEditorActive" class="site-select-multiple" v-model="publisherValues" multiple>
           <option v-for="publisher in this.getPublishers" :key="publisher.id" :value="publisher.id">{{publisher.name}}</option>
         </select>
       </div>
@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody v-for="row in this.getBooks" :key="row.id">
-        <tr @click="edit(row.id)">
+        <tr :class="{'active-row': activeRows[row.id]}" @click="edit(row.id)">
           <td>{{row.title}}</td>
           <td>{{row.authorName}}</td>
           <td>{{row.language}}</td>
@@ -77,9 +77,10 @@ export default defineComponent({
       descriptionInput: SiteInput,
       priceInput: SiteInput,
       authorValue: String,
-      genreValues: String,
-      publisherValues: String,
-      selectedBook: { id: String, title: String, language: String, description: String, price: String }
+      genreValues: [],
+      publisherValues: [],
+      selectedBook: { id: String, title: String, language: String, description: String, price: String },
+      activeRows: Array<boolean>()
     }
   },
   computed: mapGetters(['getAuthors', 'getPublishers', 'getGenres', 'getBooks']),
@@ -98,8 +99,10 @@ export default defineComponent({
       await this.updateBooks()
       this.refreshEditor()
     },
-    async edit (authorId: any) {
-      this.selectedBook = this.getBooks.find((value: any) => value.id === authorId)
+    async edit (index: any) {
+      this.resetChoose()
+      this.activeRows[index] = !this.activeRows[index]
+      this.selectedBook = this.getBooks.find((value: any) => value.id === index)
       this.titleInput.setValue(this.selectedBook.title)
       this.languageInput.setValue(this.selectedBook.language)
       this.descriptionInput.setValue(this.selectedBook.description)
@@ -134,6 +137,10 @@ export default defineComponent({
       this.descriptionInput.clear()
       this.priceInput.clear()
       this.isEditorActive = false
+      this.resetChoose()
+    },
+    resetChoose () {
+      this.activeRows = this.activeRows.map(x => false)
     }
   },
   async mounted () {
@@ -231,16 +238,17 @@ td {
 }
 
 .styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: #8245bd;
+  color: #ffffff;
+  background-color: #ab7ee1;
 }
 
 .site-select {
+  text-align: center;
   font-family: 'Open Sans', sans-serif;
   padding: 2px;
   font-weight: bold;
   margin: 10px;
-  font-size: 12px;
+  font-size: 18px;
   width: 80%;
   height: 36px;
   box-sizing: border-box;
@@ -258,4 +266,30 @@ td {
 .site-select::placeholder {
   color: rgba(0, 0, 0, 0.60);
 }
+
+.site-select-multiple {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  padding: 2px;
+  font-weight: bold;
+  margin: 10px;
+  font-size: 18px;
+  width: 80%;
+  height: 128px;
+  box-sizing: border-box;
+  border: 3px solid #dab9ff;
+  -webkit-transition: 0.8s;
+  transition: 0.8s;
+  outline: none;
+  background-color: #e4d5f6;
+}
+
+.site-select-multiple:focus {
+  border: 3px solid #913294;
+}
+
+.site-select-multiple::placeholder {
+  color: rgba(0, 0, 0, 0.60);
+}
+
 </style>

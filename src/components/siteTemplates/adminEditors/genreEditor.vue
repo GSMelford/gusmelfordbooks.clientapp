@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody v-for="row in this.getGenres" :key="row.id">
-          <tr @click="edit(row.id)">
+          <tr :class="{'active-row': activeRows[row.id]}" @click="edit(row.id)">
             <td>{{row.name}}</td>
             <td>{{row.description}}</td>
           </tr>
@@ -49,7 +49,8 @@ export default defineComponent({
       isEditorActive: false,
       inputName: SiteInput,
       inputDescription: SiteInput,
-      selectedGenre: { id: String, name: String, description: String }
+      selectedGenre: { id: String, name: String, description: String },
+      activeRows: Array<boolean>()
     }
   },
   computed: mapGetters(['getGenres']),
@@ -63,8 +64,10 @@ export default defineComponent({
       await this.updateGenres()
       this.refreshEditor()
     },
-    async edit (genreId: any) {
-      this.selectedGenre = this.getGenres.find((value: any) => value.id === genreId)
+    async edit (index: any) {
+      this.resetChoose()
+      this.activeRows[index] = !this.activeRows[index]
+      this.selectedGenre = this.getGenres.find((value: any) => value.id === index)
       this.inputName.setValue(this.selectedGenre.name)
       this.inputDescription.setValue(this.selectedGenre.description)
       this.isEditorActive = true
@@ -90,6 +93,10 @@ export default defineComponent({
       this.inputName.clear()
       this.inputDescription.clear()
       this.isEditorActive = false
+      this.resetChoose()
+    },
+    resetChoose () {
+      this.activeRows = this.activeRows.map(x => false)
     }
   },
   async mounted () {
@@ -182,8 +189,8 @@ td {
 }
 
 .styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: #8245bd;
+  color: #ffffff;
+  background-color: #ab7ee1;
 }
 
 </style>

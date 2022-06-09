@@ -80,6 +80,6 @@ export const storeShopMethod = {
   },
   async removeBook (data: any): Promise<AxiosResponse> {
     const url = 'api/store/book?bookId=' + data
-    return await httpClient.put(url)
+    return await httpClient.delete(url)
   }
 }

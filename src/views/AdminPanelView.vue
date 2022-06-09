@@ -1,11 +1,11 @@
 <template>
   <div class="main-container">
-    <site-header class="site-header" @change-editor="changeEditor"></site-header>
-    <genre-editor v-if="editorNow === 'GENRES'"></genre-editor>
-    <author-editor v-if="editorNow === 'AUTHORS'"></author-editor>
-    <address-editor v-if="editorNow === 'ADDRESSES'"></address-editor>
-    <publisher-editor v-if="editorNow === 'PUBLISHERS'"></publisher-editor>
-    <book-editor v-if="editorNow === 'BOOKS'"></book-editor>
+    <site-header is-admin="true" class="site-header" @change-editor="changeEditor"></site-header>
+    <genre-editor class="editor" v-if="editorNow === 'GENRES'"></genre-editor>
+    <author-editor class="editor" v-if="editorNow === 'AUTHORS'"></author-editor>
+    <address-editor class="editor" v-if="editorNow === 'ADDRESSES'"></address-editor>
+    <publisher-editor class="editor" v-if="editorNow === 'PUBLISHERS'"></publisher-editor>
+    <book-editor class="editor" v-if="editorNow === 'BOOKS'"></book-editor>
     <site-footer class="footer"></site-footer>
   </div>
 </template>
@@ -30,6 +30,9 @@ export default defineComponent({
   components: { BookEditor, AddressEditor, AuthorEditor, SiteFooter, GenreEditor, SiteHeader, PublisherEditor },
   methods: {
     changeEditor (editorName) {
+      if (editorName === 'HOME') {
+        this.$router.push('home')
+      }
       this.editorNow = editorName
     }
   }

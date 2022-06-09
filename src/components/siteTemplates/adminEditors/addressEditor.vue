@@ -26,7 +26,7 @@
         </tr>
         </thead>
         <tbody v-for="row in this.getAddresses" :key="row.id">
-        <tr @click="edit(row.id)">
+        <tr :class="{'active-row': activeRows[row.id]}" @click="edit(row.id)">
           <td>{{row.country}}</td>
           <td>{{row.city}}</td>
           <td>{{row.street}}</td>
@@ -52,7 +52,8 @@ export default defineComponent({
       countryInput: SiteInput,
       cityInput: SiteInput,
       streetInput: SiteInput,
-      selectedAddress: { id: String, country: String, city: String, street: String }
+      selectedAddress: { id: String, country: String, city: String, street: String },
+      activeRows: Array<boolean>()
     }
   },
   computed: mapGetters(['getAddresses']),
@@ -67,8 +68,10 @@ export default defineComponent({
       await this.updateAddresses()
       this.refreshEditor()
     },
-    async edit (authorId: any) {
-      this.selectedAddress = this.getAddresses.find((value: any) => value.id === authorId)
+    async edit (index: any) {
+      this.resetChoose()
+      this.activeRows[index] = !this.activeRows[index]
+      this.selectedAddress = this.getAddresses.find((value: any) => value.id === index)
       this.countryInput.setValue(this.selectedAddress.country)
       this.cityInput.setValue(this.selectedAddress.city)
       this.streetInput.setValue(this.selectedAddress.street)
@@ -97,6 +100,10 @@ export default defineComponent({
       this.cityInput.clear()
       this.streetInput.clear()
       this.isEditorActive = false
+      this.resetChoose()
+    },
+    resetChoose () {
+      this.activeRows = this.activeRows.map(x => false)
     }
   },
   async mounted () {
@@ -190,7 +197,7 @@ td {
 }
 
 .styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: #8245bd;
+  color: #ffffff;
+  background-color: #ab7ee1;
 }
 </style>

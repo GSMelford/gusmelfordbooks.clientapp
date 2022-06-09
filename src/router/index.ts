@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import store from '@/store'
 import { UserRoles } from '@/store/modules/roles'
+import { httpClient } from '@/api/axiosConfig'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,16 +19,6 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Home | Shop',
       requiresAuth: true
-    }
-  },
-  {
-    path: '/admin-panel-old',
-    name: 'admin',
-    component: () => import('../views/AdminPanelViewOld.vue'),
-    meta: {
-      title: 'Admin Panel',
-      requiresAuth: true,
-      adminRoleRequired: true
     }
   },
   {
@@ -50,6 +41,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const nearestWithTitle = to.matched.slice().reverse().find((r) => r.meta && r.meta.title)
   document.title = `${nearestWithTitle?.meta.title || 'GusMelford Books'}`
+  httpClient.defaults.headers.common.Authorization = `Bearer ${store.getters.getToken}`
   if (to.meta.requiresAuth) {
     if (store.getters.getAuthState) {
       const role = store.getters.getUserRole

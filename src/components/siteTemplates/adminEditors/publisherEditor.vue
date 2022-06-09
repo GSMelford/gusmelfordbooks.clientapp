@@ -31,7 +31,7 @@
         </tr>
         </thead>
         <tbody v-for="row in this.getPublishers" :key="row.id">
-        <tr @click="edit(row.id)">
+        <tr :class="{'active-row': activeRows[row.id]}" @click="edit(row.id)">
           <td>{{row.name}}</td>
           <td>{{row.phone}}</td>
           <td>{{row.address}}</td>
@@ -57,7 +57,8 @@ export default defineComponent({
       nameInput: SiteInput,
       phoneInput: SiteInput,
       addressValue: String,
-      selectedPublisher: { id: String, name: String, phone: String, address: String }
+      selectedPublisher: { id: String, name: String, phone: String, address: String },
+      activeRows: Array<boolean>()
     }
   },
   computed: mapGetters(['getPublishers', 'getAddresses']),
@@ -72,8 +73,10 @@ export default defineComponent({
       await this.updatePublishers()
       this.refreshEditor()
     },
-    async edit (authorId: any) {
-      this.selectedPublisher = this.getPublishers.find((value: any) => value.id === authorId)
+    async edit (index: any) {
+      this.resetChoose()
+      this.activeRows[index] = !this.activeRows[index]
+      this.selectedPublisher = this.getPublishers.find((value: any) => value.id === index)
       this.nameInput.setValue(this.selectedPublisher.name)
       this.phoneInput.setValue(this.selectedPublisher.phone)
       this.addressValue = this.selectedPublisher.address
@@ -101,6 +104,10 @@ export default defineComponent({
       this.nameInput.clear()
       this.phoneInput.clear()
       this.isEditorActive = false
+      this.resetChoose()
+    },
+    resetChoose () {
+      this.activeRows = this.activeRows.map(x => false)
     }
   },
   async mounted () {
@@ -194,8 +201,8 @@ td {
 }
 
 .styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: #8245bd;
+  color: #ffffff;
+  background-color: #ab7ee1;
 }
 
 .site-select {

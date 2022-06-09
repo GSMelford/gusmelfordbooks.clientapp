@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody v-for="row in this.getAuthors" :key="row.id">
-        <tr @click="edit(row.id)">
+        <tr :class="{'active-row': activeRows[row.id]}" @click="edit(row.id)">
           <td>{{row.firstName}}</td>
           <td>{{row.middleName}}</td>
           <td>{{row.lastName}}</td>
@@ -56,7 +56,8 @@ export default defineComponent({
       middleNameInput: SiteInput,
       lastNameNameInput: SiteInput,
       dateOfBirthInput: SiteInput,
-      selectedAuthor: { id: String, firstName: String, middleName: String, lastName: String, dateOfBirth: String }
+      selectedAuthor: { id: String, firstName: String, middleName: String, lastName: String, dateOfBirth: String },
+      activeRows: Array<boolean>()
     }
   },
   computed: mapGetters(['getAuthors']),
@@ -72,8 +73,10 @@ export default defineComponent({
       await this.updateAuthors()
       this.refreshEditor()
     },
-    async edit (authorId: any) {
-      this.selectedAuthor = this.getAuthors.find((value: any) => value.id === authorId)
+    async edit (index: any) {
+      this.resetChoose()
+      this.activeRows[index] = !this.activeRows[index]
+      this.selectedAuthor = this.getAuthors.find((value: any) => value.id === index)
       this.firstNameInput.setValue(this.selectedAuthor.firstName)
       this.middleNameInput.setValue(this.selectedAuthor.middleName)
       this.lastNameNameInput.setValue(this.selectedAuthor.lastName)
@@ -105,6 +108,10 @@ export default defineComponent({
       this.lastNameNameInput.clear()
       this.dateOfBirthInput.clear()
       this.isEditorActive = false
+      this.resetChoose()
+    },
+    resetChoose () {
+      this.activeRows = this.activeRows.map(x => false)
     }
   },
   async mounted () {
@@ -199,7 +206,7 @@ td {
 }
 
 .styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: #8245bd;
+  color: #ffffff;
+  background-color: #ab7ee1;
 }
 </style>

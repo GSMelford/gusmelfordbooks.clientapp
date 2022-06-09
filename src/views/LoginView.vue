@@ -9,7 +9,7 @@
               <h3>Sign In</h3>
               <input v-model="userInfo.email" type="email" placeholder="Email" required>
               <input v-model="userInfo.password" type="password" placeholder="Password" required>
-              <input type="button" class="submit-button" @click="doLogin" value="Login">
+              <site-button text="Login" width="100%" @click="doLogin"></site-button>
               <p>Don't have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; formHeight = '640px'">Sign up here</a></p>
             </form>
           </div>
@@ -24,7 +24,7 @@
               <input v-model="userInfo.phone" type="text" placeholder="Phone" required>
               <input v-model="userInfo.password" type="password" placeholder="Password" required>
               <input v-model="userInfo.confirmPassword" type="password" placeholder="Confirm Password" required>
-              <input type="button" class="submit-button" @click="doRegister" value="Register">
+              <site-button text="Register" width="100%" @click="doRegister"></site-button>
               <p>Already have an account? <a href="#" @click="settings.registerActive = !settings.registerActive; formHeight = '380px'">Sign in here</a></p>
             </form>
           </div>
@@ -37,9 +37,11 @@
 
 <script>
 import { defineComponent } from 'vue'
+import SiteButton from '@/components/siteTemplates/siteButton.vue'
 
 export default defineComponent({
   name: 'LoginView',
+  components: { SiteButton },
   data: () => {
     return {
       userInfo: {
@@ -112,21 +114,23 @@ export default defineComponent({
 form {
   height: v-bind(formHeight);
   width: 400px;
-  background-color: rgba(0, 0, 0, 0.403);
+  font-family: 'Open Sans', sans-serif;
+  color: snow;
+  background-color: #232323;
+  border-radius: 10px;
+  box-shadow: #c38fff 0 1px 4px;
   position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  border-radius: 10px;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 50px 35px;
 }
 
 form * {
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  color: snow;
   letter-spacing: 1px;
   outline: none;
   border: none;
@@ -147,7 +151,6 @@ h2 {
   color: snow;
   padding: 15px;
   width: 400px;
-  background-color: rgba(0, 0, 0, 0.70);
   border-radius: 10px;
   position: absolute;
   left: 50%;
@@ -159,26 +162,17 @@ input {
   display: block;
   height: 50px;
   width: 100%;
-  background-color: rgba(206, 205, 205, 0.514);
+  background-color: #e3d0e8;
   border-radius: 5px;
   padding: 0 10px;
   margin-top: 8px;
-  font-size: 14px;
-  font-weight: 300;
+  font-size: large;
+  font-weight: bold;
   color: black;
 }
 
 ::placeholder {
-  color: #000000;
-}
-
-.submit-button{
-  background-color: rgba(21, 20, 20, 0.71);
-  color: snow;
-}
-
-.submit-button:hover{
-  background-color: rgba(58, 57, 57, 0.8);
+  color: #777777;
 }
 
 p{
