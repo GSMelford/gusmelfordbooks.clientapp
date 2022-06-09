@@ -1,6 +1,7 @@
 <template>
   <div class="header-container">
     <div class="buttons">
+      <site-button v-if="!isAdmin" text="ADMIN PANEL" @click="changeEditor('ADMIN PANEL')"></site-button>
       <site-button v-if="isAdmin" text="HOME" @click="changeEditor('HOME')"></site-button>
       <site-button v-if="isAdmin" text="GENRES" @click="changeEditor('GENRES')"></site-button>
       <site-button v-if="isAdmin" text="AUTHORS" @click="changeEditor('AUTHORS')"></site-button>

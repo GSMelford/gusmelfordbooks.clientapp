@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <site-header class="header"></site-header>
+    <site-header class="header" @change-editor="changeEditor"></site-header>
     <div class="user-books-container">
       <div class="table">
         <table class="styled-table">
@@ -102,6 +102,11 @@ export default defineComponent({
       this.totalAmount = 0
       this.countBook = 0
       await this.updateUserBooks()
+    },
+    changeEditor (page: string) {
+      if (page === 'ADMIN PANEL') {
+        this.$router.push('admin-panel')
+      }
     }
   },
   async mounted () {
