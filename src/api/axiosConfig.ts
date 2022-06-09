@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 const config = {
-  baseURL: 'https://localhost:44397/',
+  baseURL: 'https://dev.gusmelford.com/books/api/',
   headers: {
     'Content-Type': 'application/json'
   }
