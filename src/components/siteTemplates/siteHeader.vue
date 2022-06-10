@@ -20,6 +20,7 @@
 import SiteButton from '@/components/siteTemplates/siteButton.vue'
 import { defineComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
+import router from '@/router'
 
 export default defineComponent({
   name: 'siteHeader',
@@ -41,7 +42,7 @@ export default defineComponent({
     },
     logout () {
       this.onLogout()
-      location.reload()
+      router.push('login')
     }
   }
 })
