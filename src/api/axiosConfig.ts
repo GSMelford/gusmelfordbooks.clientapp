@@ -3,7 +3,7 @@ import store from '@/store'
 import router from '@/router'
 
 const config = {
-  baseURL: 'https://dev.gusmelford.com/books/api/java/',
+  baseURL: 'http://localhost:8080/',
   headers: {
     'Content-Type': 'application/json'
   }
