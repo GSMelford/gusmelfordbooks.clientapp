@@ -23,44 +23,44 @@ export const storeShopMethod = {
     return await httpClient.post(url, data)
   },
   async getAllGenres (): Promise<AxiosResponse> {
-    const url = 'api/store/genres'
+    const url = 'api/store/genres/all'
     return await httpClient.get(url)
   },
   async getAllAuthors (): Promise<AxiosResponse> {
-    const url = 'api/store/authors'
+    const url = 'api/store/authors/all'
     return await httpClient.get(url)
   },
   async getAllAddresses (): Promise<AxiosResponse> {
-    const url = 'api/store/addresses'
+    const url = 'api/store/addresses/all'
     return await httpClient.get(url)
   },
   async getAllPublishers (): Promise<AxiosResponse> {
-    const url = 'api/store/publishers '
+    const url = 'api/store/publishers/all'
     return await httpClient.get(url)
   },
   async getAllBooks (): Promise<AxiosResponse> {
-    const url = 'api/store/books '
+    const url = 'api/store/book/all'
     return await httpClient.get(url)
   },
   async updateGenre (data: any): Promise<AxiosResponse> {
     const url = 'api/store/genre'
-    return await httpClient.put(url, data)
+    return await httpClient.patch(url, data)
   },
   async updateAuthor (data: any): Promise<AxiosResponse> {
     const url = 'api/store/author'
-    return await httpClient.put(url, data)
+    return await httpClient.patch(url, data)
   },
   async updateAddress (data: any): Promise<AxiosResponse> {
     const url = 'api/store/address'
-    return await httpClient.put(url, data)
+    return await httpClient.patch(url, data)
   },
   async updatePublisher (data: any): Promise<AxiosResponse> {
     const url = 'api/store/publisher'
-    return await httpClient.put(url, data)
+    return await httpClient.patch(url, data)
   },
   async updateBook (data: any): Promise<AxiosResponse> {
     const url = 'api/store/book'
-    return await httpClient.put(url, data)
+    return await httpClient.patch(url, data)
   },
   async removeGenre (data: any): Promise<AxiosResponse> {
     const url = 'api/store/genre?genreId=' + data
