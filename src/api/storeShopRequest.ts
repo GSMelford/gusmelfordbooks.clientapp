@@ -23,19 +23,19 @@ export const storeShopMethod = {
     return await httpClient.post(url, data)
   },
   async getAllGenres (): Promise<AxiosResponse> {
-    const url = 'api/store/genres/all'
+    const url = 'api/store/genre/all'
     return await httpClient.get(url)
   },
   async getAllAuthors (): Promise<AxiosResponse> {
-    const url = 'api/store/authors/all'
+    const url = 'api/store/author/all'
     return await httpClient.get(url)
   },
   async getAllAddresses (): Promise<AxiosResponse> {
-    const url = 'api/store/addresses/all'
+    const url = 'api/store/address/all'
     return await httpClient.get(url)
   },
   async getAllPublishers (): Promise<AxiosResponse> {
-    const url = 'api/store/publishers/all'
+    const url = 'api/store/publisher/all'
     return await httpClient.get(url)
   },
   async getAllBooks (): Promise<AxiosResponse> {
