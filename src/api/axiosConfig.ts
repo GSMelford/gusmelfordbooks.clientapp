@@ -5,7 +5,8 @@ import router from '@/router'
 const config = {
   baseURL: 'http://localhost:8080/',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
   }
 }
 
