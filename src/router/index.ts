@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'login',
     component: () => import('../views/LoginView.vue'),
     meta: {
-      title: 'Login | GusMelford Books'
+      title: 'Login | GusMelfordBooks'
     }
   },
   {
