@@ -23,44 +23,44 @@ export const storeShopMethod = {
     return await httpClient.post(url, data)
   },
   async getAllGenres (): Promise<AxiosResponse> {
-    const url = 'api/store/genre/all'
+    const url = 'api/store/genres'
     return await httpClient.get(url)
   },
   async getAllAuthors (): Promise<AxiosResponse> {
-    const url = 'api/store/author/all'
+    const url = 'api/store/authors'
     return await httpClient.get(url)
   },
   async getAllAddresses (): Promise<AxiosResponse> {
-    const url = 'api/store/address/all'
+    const url = 'api/store/addresses'
     return await httpClient.get(url)
   },
   async getAllPublishers (): Promise<AxiosResponse> {
-    const url = 'api/store/publisher/all'
+    const url = 'api/store/publishers '
     return await httpClient.get(url)
   },
   async getAllBooks (): Promise<AxiosResponse> {
-    const url = 'api/store/book/all'
+    const url = 'api/store/books '
     return await httpClient.get(url)
   },
   async updateGenre (data: any): Promise<AxiosResponse> {
     const url = 'api/store/genre'
-    return await httpClient.patch(url, data)
+    return await httpClient.put(url, data)
   },
   async updateAuthor (data: any): Promise<AxiosResponse> {
     const url = 'api/store/author'
-    return await httpClient.patch(url, data)
+    return await httpClient.put(url, data)
   },
   async updateAddress (data: any): Promise<AxiosResponse> {
     const url = 'api/store/address'
-    return await httpClient.patch(url, data)
+    return await httpClient.put(url, data)
   },
   async updatePublisher (data: any): Promise<AxiosResponse> {
     const url = 'api/store/publisher'
-    return await httpClient.patch(url, data)
+    return await httpClient.put(url, data)
   },
   async updateBook (data: any): Promise<AxiosResponse> {
     const url = 'api/store/book'
-    return await httpClient.patch(url, data)
+    return await httpClient.put(url, data)
   },
   async removeGenre (data: any): Promise<AxiosResponse> {
     const url = 'api/store/genre?genreId=' + data
