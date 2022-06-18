@@ -41,8 +41,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const nearestWithTitle = to.matched.slice().reverse().find((r) => r.meta && r.meta.title)
   document.title = `${nearestWithTitle?.meta.title || 'GusMelford Books'}`
-  httpClient.defaults.headers.common.Authorization = `Bearer ${store.getters.getToken}`
   if (to.meta.requiresAuth) {
+    httpClient.defaults.headers.common.Authorization = `Bearer ${store.getters.getToken}`
     if (store.getters.getAuthState) {
       const role = store.getters.getUserRole
       if (to.meta.adminRoleRequired) {
